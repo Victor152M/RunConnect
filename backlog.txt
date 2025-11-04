@@ -1,0 +1,14 @@
+TASKS
+
+1. Implement a map screen + location
+2. Navigation bar
+3. Friends tab
+4. Create profiles for friends
+(where you can see their previous runs + location if currently running)
+5. Home Screen - amount of steps + your personal goal + weekly preview (number of steps of friends - competition)
+6. Implement step counter
+
+Vic - 1, 2
+Ivan - 5, 6
+
+Deadline: 29th of November 
