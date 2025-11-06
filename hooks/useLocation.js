@@ -1,4 +1,3 @@
-// hooks/useLocation.js
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
@@ -12,23 +11,25 @@ export default function useLocation() {
     const getLocation = async () => {
       try {
         const { status } = await Location.requestForegroundPermissionsAsync();
+        
         if (status !== 'granted') {
           Alert.alert(
             'Location Permission',
             'Location permission is required to show your current location.'
           );
+          setError('Permission denied');
           setLoading(false);
           return;
         }
 
         const loc = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Highest,
+          accuracy: Location.Accuracy.Balanced, // Changed from Highest for faster response
         });
-
+        
         setLocation(loc.coords);
+        setLoading(false);
       } catch (err) {
         setError(err.message);
-      } finally {
         setLoading(false);
       }
     };
