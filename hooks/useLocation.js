@@ -1,42 +1,59 @@
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+
+let cachedLocation = null;
 
 export default function useLocation() {
-  const [location, setLocation] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [location, setLocation] = useState(cachedLocation);
+  const [loading, setLoading] = useState(true); // Start as true
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const getLocation = async () => {
+    let isMounted = true;
+
+    async function getLocation() {
       try {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        
-        if (status !== 'granted') {
-          Alert.alert(
-            'Location Permission',
-            'Location permission is required to show your current location.'
-          );
-          setError('Permission denied');
+        // If we have cached, use it immediately but keep loading
+        if (cachedLocation && isMounted) {
+          setLocation(cachedLocation);
           setLoading(false);
           return;
         }
 
-        const loc = await Location.getCurrentPositionAsync({
-            enableHighAccuracy: false,
-            timeout: 3000,
-            maximumAge: 10000, 
-        });
+        const { status } = await Location.requestForegroundPermissionsAsync();
         
-        setLocation(loc.coords);
-        setLoading(false);
+        if (status !== 'granted') {
+          if (isMounted) {
+            setError('Permission to access location was denied');
+            setLoading(false);
+          }
+          return;
+        }
+
+        const currentLocation = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Low, // faster than High or Balanced
+        });
+
+        if (isMounted && currentLocation?.coords) {
+          cachedLocation = currentLocation.coords;
+          setLocation(currentLocation.coords);
+          setError(null);
+          setLoading(false);
+        }
       } catch (err) {
-        setError(err.message);
-        setLoading(false);
+        console.error('Location error:', err);
+        if (isMounted) {
+          setError(err.message);
+          setLoading(false);
+        }
       }
-    };
+    }
 
     getLocation();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return { location, loading, error };
