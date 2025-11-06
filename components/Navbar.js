@@ -67,14 +67,14 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: '#08e6ff',
+    borderBottomColor: '#991F26',
   },
   tabText: {
     fontSize: 16,
     color: '#666',
   },
   activeTabText: {
-    color: '#08e6ff',
+    color: '#991F26',
     fontWeight: 'bold',
   },
 });

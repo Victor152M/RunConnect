@@ -23,7 +23,9 @@ export default function useLocation() {
         }
 
         const loc = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Balanced, // Changed from Highest for faster response
+            enableHighAccuracy: false,
+            timeout: 3000,
+            maximumAge: 10000, 
         });
         
         setLocation(loc.coords);

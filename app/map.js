@@ -9,7 +9,7 @@ export default function OSMMapWebView() {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#08e6ff" />
+        <ActivityIndicator size="large" color="#991F26" />
         <Text style={styles.loadingText}>Getting your location...</Text>
       </View>
     );

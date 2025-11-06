@@ -2,10 +2,8 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const HomeScreen = () => {
   return (
-    <View>
-      <View>
-        <Text style={styles.title}> Hi there! Modification number 2 </Text>
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.title}> RunConnect </Text>
     </View>
   );
 }
@@ -13,5 +11,6 @@ const HomeScreen = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, textAlign: 'center', color: '#08e6ffa5'}
+  title: { fontSize: 34, textAlign: 'center', color: '#991F26', fontWeight: 800},
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center'}
 });
