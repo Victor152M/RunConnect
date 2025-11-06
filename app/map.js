@@ -32,6 +32,9 @@ export default function OSMMapWebView() {
           .leaflet-top.leaflet-left {
             top: 40px !important;
           }
+          .leaflet-bottom.leaflet-right {
+            bottom: 80px !important;
+          }
         </style>
       </head>
       <body>
@@ -80,6 +83,9 @@ export default function OSMMapWebView() {
         html, body, #map { height: 100%; margin: 0; padding: 0; }
         .leaflet-top.leaflet-left {
           top: 40px !important;
+        }
+        .leaflet-bottom.leaflet-right {
+          bottom: 80px !important;
         }
       </style>
     </head>

@@ -9,7 +9,7 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="map" />
       </Stack>
-      <Navbar />
+      <Navbar/>
     </View>
   );
 }
