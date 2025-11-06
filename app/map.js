@@ -6,7 +6,6 @@ import useLocation from '../hooks/useLocation';
 export default function OSMMapWebView() {
   const { location, loading, error } = useLocation();
 
-  // Show loading while getting location
   if (loading) {
     return (
       <View style={styles.centerContainer}>
@@ -16,9 +15,8 @@ export default function OSMMapWebView() {
     );
   }
 
-  // Show error if permission denied or other error
   if (error || !location) {
-    const latitude = 44.4268; // Fallback to Bucharest
+    const latitude = 44.4268;
     const longitude = 26.1025;
     
     const html = `
@@ -67,7 +65,6 @@ export default function OSMMapWebView() {
     );
   }
 
-  // Render map with user location
   const latitude = location.latitude;
   const longitude = location.longitude;
 
