@@ -1,112 +1,84 @@
-// StepTrackerUI.js
-// Fully Expo-compatible swipe UI with chart + goal circle
-
 import React, { useState } from "react";
-import {
-    Button,
-    Dimensions,
-    PanResponder,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from "react-native";
-import { BarChart } from "react-native-chart-kit";
+import { Button, Dimensions, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
-// ---- MAIN COMPONENT ----
+// Screen width for horizontal scrolling
+const SCREEN_WIDTH = Dimensions.get("window").width;
+
 export default function StepTrackerUI({ steps }) {
-  const [page, setPage] = useState(0);
   const [goal, setGoal] = useState(10000);
   const [goalInput, setGoalInput] = useState("");
 
-  const percentage = goal > 0 ? steps / goal : 0;
+  const weeklySteps = [5000, 7000, 8500, 4000, 12000, 9000, 6000];
+  const maxWeek = Math.max(...weeklySteps);
 
-  // Choose circle color by progress %
-  const getCircleColor = () => {
-    if (percentage < 0.3) return "#d62828";
-    if (percentage < 0.6) return "#b58900";
-    if (percentage < 0.9) return "#a3ff00";
-    return "#007f33";
+  const percent = goal > 0 ? steps / goal : 0;
+
+  const getColor = () => {
+    if (percent < 0.3) return "#d62828"; // red
+    if (percent < 0.6) return "#b58900"; // mustard
+    if (percent < 0.9) return "#a3ff00"; // lime
+    return "#007f33"; // dark green
   };
 
-  const weeklySteps = [5000, 7000, 8500, 4000, 12000, 9000, 6000];
-
-  // --- Basic swipe using PanResponder (works on Expo Web + iOS + Android) ---
-  const swipe = PanResponder.create({
-    onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dx) > 20,
-    onPanResponderRelease: (_, g) => {
-      if (g.dx < -40) setPage(1); // swipe left
-      if (g.dx > 40) setPage(0); // swipe right
-    },
-  });
-
   return (
-    <View style={styles.container} {...swipe.panHandlers}>
-      {page === 0 ? (
-        // ---- PAGE 1: Steps Circle ----
-        <View style={styles.page}>
-          <View
-            style={[styles.circle, { borderColor: getCircleColor() }]}
-          >
-            <Text style={styles.steps}>{steps}</Text>
-            <Text style={styles.goal}>/ {goal}</Text>
-          </View>
-
-          <View style={styles.goalBox}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter new goal"
-              keyboardType="numeric"
-              value={goalInput}
-              onChangeText={setGoalInput}
-            />
-            <Button
-              title="Set Goal"
-              onPress={() => {
-                const v = parseInt(goalInput);
-                if (!isNaN(v) && v > 0) setGoal(v);
-              }}
-            />
-          </View>
+    <ScrollView
+      horizontal
+      pagingEnabled
+      showsHorizontalScrollIndicator={false}
+      style={{ flex: 1 }}
+    >
+      {/* PAGE 1 — Steps Circle */}
+      <View style={[styles.page, { width: SCREEN_WIDTH }]}>
+        <View style={[styles.circle, { borderColor: getColor() }]}>
+          <Text style={styles.stepsText}>{steps}</Text>
+          <Text style={styles.goalText}>/ {goal}</Text>
         </View>
-      ) : (
-        // ---- PAGE 2: Weekly Chart ----
-        <View style={styles.page}>
-          <BarChart
-            data={{
-              labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-              datasets: [{ data: weeklySteps }],
+
+        <View style={styles.goalContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter goal"
+            keyboardType="numeric"
+            value={goalInput}
+            onChangeText={setGoalInput}
+          />
+          <Button
+            title="Set Goal"
+            onPress={() => {
+              const n = parseInt(goalInput);
+              if (!isNaN(n) && n > 0) setGoal(n);
             }}
-            width={Dimensions.get("window").width - 20}
-            height={300}
-            fromZero
-            chartConfig={{
-              backgroundColor: "#ffffff",
-              backgroundGradientFrom: "#ffffff",
-              backgroundGradientTo: "#ffffff",
-              color: () => "#000",
-              labelColor: () => "#000",
-              decimalPlaces: 0,
-            }}
-            style={{ marginTop: 20 }}
           />
         </View>
-      )}
-    </View>
+      </View>
+
+      {/* PAGE 2 — Weekly Chart */}
+      <View style={[styles.page, { width: SCREEN_WIDTH }]}>
+        <Text style={styles.weeklyTitle}>Weekly steps</Text>
+
+        <View style={styles.chartContainer}>
+          {weeklySteps.map((v, i) => {
+            const height = (v / maxWeek) * 160;
+            return (
+              <View key={i} style={styles.barWrapper}>
+                <View style={[styles.bar, { height }]} />
+                <Text style={styles.barLabel}>{v}</Text>
+              </View>
+            );
+          })}
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
-// ---- STYLES ----
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
   page: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
+
   circle: {
     width: 220,
     height: 220,
@@ -116,26 +88,58 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 40,
   },
-  steps: {
+
+  stepsText: {
     fontSize: 42,
     fontWeight: "bold",
     color: "#000",
   },
-  goal: {
-    fontSize: 18,
+
+  goalText: {
+    fontSize: 20,
     color: "#555",
-    marginTop: 4,
   },
-  goalBox: {
+
+  goalContainer: {
     width: "70%",
     alignItems: "center",
   },
+
   input: {
+    width: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
-    width: "100%",
     padding: 10,
-    marginBottom: 10,
     borderRadius: 8,
+    marginBottom: 10,
+  },
+
+  weeklyTitle: {
+    marginBottom: 20,
+    fontSize: 22,
+    fontWeight: "600",
+  },
+
+  chartContainer: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    height: 200,
+  },
+
+  barWrapper: {
+    alignItems: "center",
+    marginHorizontal: 10,
+  },
+
+  bar: {
+    width: 30,
+    backgroundColor: "#000",
+    borderRadius: 6,
+  },
+
+  barLabel: {
+    marginTop: 6,
+    fontSize: 12,
   },
 });
