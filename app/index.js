@@ -1,18 +1,14 @@
-import { StyleSheet, View } from "react-native";
-import StepTrackerUI from "../components/StepTrackerUI";
+import StepTrackerUI from "@/components/StepTrackerUI";
+import { View } from "react-native";
 
 export default function Index() {
-  const steps = 5342; // ← сюда передашь настоящий шагомер позже
+
+  // тестовые шаги — потом заменишь на реальные с Google Fit
+  const steps = 4567;
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1 }}>
       <StepTrackerUI steps={steps} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
