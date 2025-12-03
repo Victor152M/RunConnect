@@ -1,4 +1,4 @@
-import { useSteps } from "context/StepsContext";
+import { useSteps } from "context/SteoContext";
 import React from "react";
 import { View } from "react-native";
 import StepTrackerUI from "../components/StepTrackerUI";
