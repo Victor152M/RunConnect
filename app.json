@@ -20,7 +20,10 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "permissions": ["ACTIVITY_RECOGNITION"]
+      "permissions": [
+        "ACTIVITY_RECOGNITION"
+      ],
+      "package": "com.victor_and_ivan.RunConnect"
     },
     "web": {
       "output": "static",
@@ -44,6 +47,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "2a6a0f90-6aeb-4eaf-9cb1-be62c8debc14"
+      }
     }
   }
 }
