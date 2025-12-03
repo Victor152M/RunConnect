@@ -24,40 +24,38 @@ export function StepsProvider({ children }: Props) {
 
   // ---- СЧИТЫВАЕМ ШАГИ ----
 useEffect(() => {
-  // Обёртка в async, чтобы можно было использовать await
   (async () => {
-    // Запрашиваем разрешение на шагомер
+    // 1. Запрос разрешения
     const { status } = await Pedometer.requestPermissionsAsync();
     if (status !== 'granted') {
       console.log('Разрешение на шагомер не получено');
-      return; // прекращаем работу, если разрешение не дали
+      return; // прекращаем работу
     }
 
-    // Проверяем, доступен ли шагомер на устройстве
+    // 2. Проверка доступности датчика (опционально, но полезно)
     const available = await Pedometer.isAvailableAsync();
     if (!available) {
       console.log('Шагомер недоступен на этом устройстве');
       return;
     }
 
-    // Подписка на шаги
+    // 3. Подписка на шаги (только если разрешение получено)
     const subscription = Pedometer.watchStepCount(result => {
-      const steps = result.steps;
-      setTodaySteps(steps);
-
+      setTodaySteps(result.steps);
       const day = new Date().getDay();
       setWeekSteps(prev => {
         const updated = [...prev];
-        updated[day] = steps;
+        updated[day] = result.steps;
         AsyncStorage.setItem("WEEK_STEPS", JSON.stringify(updated));
         return updated;
       });
     });
 
-    // Чистим подписку при размонтировании
+    // 4. Очистка подписки при размонтировании
     return () => subscription.remove();
   })();
 }, []);
+
 
 
   // ---- ЗАГРУЖАЕМ ДАННЫЕ ИЗ ПАМЯТИ ----
