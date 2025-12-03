@@ -23,13 +23,29 @@ export function StepsProvider({ children }: Props) {
   const [weekSteps, setWeekSteps] = useState<number[]>([0, 0, 0, 0, 0, 0, 0]);
 
   // ---- СЧИТЫВАЕМ ШАГИ ----
-  useEffect(() => {
-    const subscription = Pedometer.watchStepCount(async result => {
+useEffect(() => {
+  // Обёртка в async, чтобы можно было использовать await
+  (async () => {
+    // Запрашиваем разрешение на шагомер
+    const { status } = await Pedometer.requestPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Разрешение на шагомер не получено');
+      return; // прекращаем работу, если разрешение не дали
+    }
+
+    // Проверяем, доступен ли шагомер на устройстве
+    const available = await Pedometer.isAvailableAsync();
+    if (!available) {
+      console.log('Шагомер недоступен на этом устройстве');
+      return;
+    }
+
+    // Подписка на шаги
+    const subscription = Pedometer.watchStepCount(result => {
       const steps = result.steps;
       setTodaySteps(steps);
 
-      const day = new Date().getDay(); // 0=вс, 1=пн...
-
+      const day = new Date().getDay();
       setWeekSteps(prev => {
         const updated = [...prev];
         updated[day] = steps;
@@ -38,8 +54,11 @@ export function StepsProvider({ children }: Props) {
       });
     });
 
+    // Чистим подписку при размонтировании
     return () => subscription.remove();
-  }, []);
+  })();
+}, []);
+
 
   // ---- ЗАГРУЖАЕМ ДАННЫЕ ИЗ ПАМЯТИ ----
   useEffect(() => {
