@@ -4,19 +4,18 @@
     "slug": "RunConnect",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/sample_icon.png",
     "scheme": "runconnect",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.victor-and-ivan.RunConnect"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/sample_icon.png",
-        "backgroundImage": "./assets/images/sample_icon.png",
-        "monochromeImage": "./assets/images/sample_icon.png"
+        "foregroundImage": "./assets/images/sample_icon.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -26,15 +25,14 @@
       "package": "com.victor_and_ivan.RunConnect"
     },
     "web": {
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "output": "static"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/sample_icon.png",
+          "image": "./assets/images/splashscreen_logo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
