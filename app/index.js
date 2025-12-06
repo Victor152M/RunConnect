@@ -1,13 +1,14 @@
 import React from "react";
 import { View } from "react-native";
 import StepTrackerUI from "../components/StepTrackerUI";
+import { useSteps } from "../context/SteoContext";
 
 export default function Home() {
-  const steps = 4200; // ← подставь реальные шаги из Google Fit
+  const { todaySteps, weekSteps } = useSteps();
 
   return (
     <View style={{ flex: 1 }}>
-      <StepTrackerUI steps={steps} />
+      <StepTrackerUI steps={todaySteps} weeklySteps={weekSteps} />
     </View>
   );
 }
