@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import { Stack } from "expo-router";
 import { StyleSheet, View } from "react-native";
-import { StepsProvider } from "../context/SteoContext"; // ← исправить путь
+import { StepsProvider } from "../context/StepsContext"; // ← исправить путь
 // если файл называется SteoContext.tsx, ПЕРЕИМЕНУЙ в StepsContext.tsx
 
 export default function RootLayout() {

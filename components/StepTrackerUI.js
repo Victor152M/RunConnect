@@ -4,20 +4,31 @@ import { Button, Dimensions, ScrollView, StyleSheet, Text, TextInput, View } fro
 // Screen width for horizontal scrolling
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export default function StepTrackerUI({ steps }) {
+export default function StepTrackerUI({ weeklySteps }) {
   const [goal, setGoal] = useState(10000);
   const [goalInput, setGoalInput] = useState("");
 
-  const weeklySteps = [5000, 7000, 8500, 4000, 12000, 9000, 6000];
-  const maxWeek = Math.max(...weeklySteps);
+  const safeWeeklySteps = Array.isArray(weeklySteps) && weeklySteps.length === 7
+    ? weeklySteps.map(v => (typeof v === "number" && !isNaN(v) ? v : 0))
+    : [0, 0, 0, 0, 0, 0, 0];
 
-  const percent = goal > 0 ? steps / goal : 0;
+  const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const maxWeek = Math.max(...safeWeeklySteps);
+
+  const todayIndex = new Date().getDay();
+
+  const todaySteps = Array.isArray(weeklySteps) && weeklySteps.length === 7
+  ? weeklySteps[todayIndex] || 0
+  : 0;
+
+  const percent = goal > 0 ? todaySteps / goal : 0;
 
   const getColor = () => {
-    if (percent < 0.3) return "#d62828"; // red
-    if (percent < 0.6) return "#b58900"; // mustard
-    if (percent < 0.9) return "#a3ff00"; // lime
-    return "#007f33"; // dark green
+    if (percent < 0.3) return "#d62828";
+    if (percent < 0.6) return "#b58900";
+    if (percent < 0.9) return "#a3ff00";
+    return "#007f33";
   };
 
   return (
@@ -30,7 +41,7 @@ export default function StepTrackerUI({ steps }) {
       {/* PAGE 1 — Steps Circle */}
       <View style={[styles.page, { width: SCREEN_WIDTH }]}>
         <View style={[styles.circle, { borderColor: getColor() }]}>
-          <Text style={styles.stepsText}>{steps}</Text>
+          <Text style={styles.stepsText}>{todaySteps}</Text>
           <Text style={styles.goalText}>/ {goal}</Text>
         </View>
 
@@ -57,12 +68,14 @@ export default function StepTrackerUI({ steps }) {
         <Text style={styles.weeklyTitle}>Weekly steps</Text>
 
         <View style={styles.chartContainer}>
-          {weeklySteps.map((v, i) => {
-            const height = (v / maxWeek) * 160;
+          {safeWeeklySteps.map((v, i) => {
+            const height = maxWeek > 0 ? (v / maxWeek) * 160 : 0;
+            const safeHeight = isNaN(height) ? 0 : height;
             return (
               <View key={i} style={styles.barWrapper}>
-                <View style={[styles.bar, { height }]} />
-                <Text style={styles.barLabel}>{v}</Text>
+                <Text style={styles.barValue}>{String(isNaN(v) ? 0 : v)}</Text>
+                <View style={[styles.bar, { height: safeHeight }]} />
+                <Text style={styles.barLabel}>{String(dayLabels[i] || "")}</Text>
               </View>
             );
           })}
@@ -129,7 +142,14 @@ const styles = StyleSheet.create({
 
   barWrapper: {
     alignItems: "center",
-    marginHorizontal: 10,
+    justifyContent: "flex-end",
+    marginHorizontal: 4,
+  },
+
+  barValue: {
+    fontSize: 12,
+    marginBottom: 4,
+    color: "#000",
   },
 
   bar: {
