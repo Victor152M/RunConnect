@@ -1,10 +1,25 @@
-import { ActivityIndicator, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import useLocation from '../hooks/useLocation';
 
 export default function OSMMapWebView() {
   const { location, loading, error } = useLocation();
+  const [data, setData] = useState(null);
+
+  const backend = "http://192.168.0.102:5000/locations"
+
+  useEffect(() => {
+    fetch(backend)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }, []);
 
   if (loading) {
     return (
@@ -18,6 +33,8 @@ export default function OSMMapWebView() {
   if (error || !location) {
     const latitude = 44.4268;
     const longitude = 26.1025;
+
+    const usersJS = `const users = ${JSON.stringify(data)};`;
     
     const html = `
       <!DOCTYPE html>
@@ -47,6 +64,14 @@ export default function OSMMapWebView() {
               attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
               maxZoom: 19,
             }).addTo(map);
+
+            ${usersJS}
+
+            users.forEach(u => {
+              L.marker([u.lat, u.lng])
+                .addTo(map)
+                .bindPopup(u.name);
+            });
           }
         </script>
       </body>
@@ -55,6 +80,9 @@ export default function OSMMapWebView() {
 
     return (
       <SafeAreaProvider>
+        <ScrollView style={{ padding: 20 }}>
+          <Text>{data ? JSON.stringify(data, null, 2) : "Loading..."}</Text>
+        </ScrollView>
         <StatusBar barStyle="dark-content" translucent={false} />
         <View style={styles.container}>
           <WebView
@@ -70,6 +98,8 @@ export default function OSMMapWebView() {
 
   const latitude = location.latitude;
   const longitude = location.longitude;
+
+  const usersJS = `const users = ${JSON.stringify(data)};`;
 
   const html = `
     <!DOCTYPE html>
@@ -102,6 +132,14 @@ export default function OSMMapWebView() {
           L.marker([${latitude}, ${longitude}]).addTo(map)
             .bindPopup('You are here!')
             .openPopup();
+
+          ${usersJS}
+
+          users.forEach(u => {
+            L.marker([u.lat, u.lng])
+              .addTo(map)
+              .bindPopup(u.name);
+          });
         }
       </script>
     </body>
@@ -110,6 +148,9 @@ export default function OSMMapWebView() {
 
   return (
     <SafeAreaProvider>
+      <ScrollView style={{ padding: 20 }}>
+        <Text>{data ? JSON.stringify(data, null, 2) : "Loading..."}</Text>
+      </ScrollView>
       <StatusBar barStyle="dark-content" translucent={false} />
       <View style={styles.container}>
         <WebView
