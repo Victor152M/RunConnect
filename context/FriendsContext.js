@@ -1,10 +1,10 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from "react";
 
-const FriendsContext = createContext();
+const FriendsContext = createContext(undefined);
 
 export function FriendsProvider({ children }) {
-  const [myName, setMyName] = useState('');
-  const [friends, setFriends] = useState([]); // array of names
+  const [myName, setMyName] = useState("");
+  const [friends, setFriends] = useState([]);
 
   const addFriend = (name) => {
     if (!friends.includes(name)) {
@@ -13,15 +13,23 @@ export function FriendsProvider({ children }) {
   };
 
   return (
-    <FriendsContext.Provider value={{
-      myName,
-      setMyName,
-      friends,
-      addFriend
-    }}>
+    <FriendsContext.Provider
+      value={{
+        myName,
+        setMyName,
+        friends,
+        addFriend,
+      }}
+    >
       {children}
     </FriendsContext.Provider>
   );
 }
 
-export const useFriends = () => useContext(FriendsContext);
+export function useFriends() {
+  const context = useContext(FriendsContext);
+  if (!context) {
+    throw new Error("useFriends must be used within a FriendsProvider");
+  }
+  return context;
+}
