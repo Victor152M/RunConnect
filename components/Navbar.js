@@ -6,10 +6,12 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   
-  const tabs = [
-    { name: 'Home', path: '/'},
-    { name: 'Map', path: '/map'},
-  ];
+const tabs = [
+  { name: 'Home', path: '/' },
+  { name: 'Map', path: '/map' },
+  { name: 'Friends', path: '/friends' },
+];
+
 
   return (
     <View style={styles.navbarContainer}>

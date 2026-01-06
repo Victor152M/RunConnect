@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
+import { useFriends } from "../context/FriendsContext";
 import useLocation from '../hooks/useLocation';
 
 export default function OSMMapWebView() {
   const { location, loading, error } = useLocation();
   const [data, setData] = useState(null);
+  const { friends } = useFriends();
+
 
   const backend = "http://192.168.0.102:5000/locations"
 
@@ -34,7 +37,12 @@ export default function OSMMapWebView() {
     const latitude = 44.4268;
     const longitude = 26.1025;
 
-    const usersJS = `const users = ${JSON.stringify(data)};`;
+    const filteredUsers = data?.filter(u =>
+        friends.includes(u.name)
+    );
+
+    const usersJS = `const users = ${JSON.stringify(filteredUsers || [])};`;
+
     
     const html = `
       <!DOCTYPE html>
