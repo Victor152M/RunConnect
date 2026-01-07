@@ -11,7 +11,7 @@ export default function OSMMapWebView() {
   const { friends } = useFriends();
 
 
-  const backend = "http://192.168.0.102:5000/locations"
+  const backend = "http://192.168.0.131:5000/locations"
 
   useEffect(() => {
     fetch(backend)
@@ -156,9 +156,11 @@ export default function OSMMapWebView() {
 
   return (
     <SafeAreaProvider>
+      {/*
       <ScrollView style={{ padding: 20 }}>
         <Text>{data ? JSON.stringify(data, null, 2) : "Loading..."}</Text>
       </ScrollView>
+      */}
       <StatusBar barStyle="dark-content" translucent={false} />
       <View style={styles.container}>
         <WebView

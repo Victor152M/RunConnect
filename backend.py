@@ -9,6 +9,8 @@ def locations():
     users = [
         {"id": 1, "lat": 44.428, "lng": 26.105, "name": "Alex"},
         {"id": 2, "lat": 44.421, "lng": 26.099, "name": "Maria"},
+        { "id": 3, "lat": 48.206, "lng": 16.375, "name": "Lukas" },
+        { "id": 4, "lat": 48.212, "lng": 16.368, "name": "Sophie" }
     ]
     return jsonify(users)
 
