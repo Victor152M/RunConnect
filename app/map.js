@@ -11,7 +11,7 @@ export default function OSMMapWebView() {
   const { friends } = useFriends();
 
 
-  const backend = "http://192.168.0.131:5000/locations"
+  const backend = "https://runconnect-bddk.onrender.com/locations"
 
   useEffect(() => {
     fetch(backend)
