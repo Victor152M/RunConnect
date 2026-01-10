@@ -1,7 +1,9 @@
-from flask import Flask, jsonify
+import os
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
-import os
+from functools import wraps
+
 
 load_dotenv()
 
