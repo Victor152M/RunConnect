@@ -149,7 +149,7 @@ export default function OSMMapWebView() {
           users.forEach(u => {
             L.marker([u.lat, u.lng])
               .addTo(map)
-              .bindPopup(u.name);
+              .bindPopup(u.name)<br/>Last seen: u.timestamp min ago);
           });
         }
       </script>
