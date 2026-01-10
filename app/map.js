@@ -9,13 +9,11 @@ import useLocation from '../hooks/useLocation';
 export default function OSMMapWebView() {
   const { location, loading, error } = useLocation();
   const [data, setData] = useState(null);
-  const { friends } = useFriends();
+  const { friends, myName } = useFriends();
 
-
-  const backend = "https://runconnect-bddk.onrender.com/locations"
-
+  const backend = "https://runconnect-bddk.onrender.com"
   useEffect(() => {
-    fetch(backend, {
+    fetch(backend + "/locations", {
         headers: {
         "api-key": API_KEY,
         },
@@ -28,6 +26,27 @@ export default function OSMMapWebView() {
         console.error(error);
       })
   }, []);
+
+  useEffect(() => {
+    if (!location || !myName) return;
+    if (!myName.trim()) return;
+    
+    fetch(backend + "/upload_location", {
+      method: "POST",
+      headers:{
+        "api-key": API_KEY,
+      },
+      body: JSON.stringify({
+        name: myName,
+        lat: location.latitude,
+        lng: location.longitude,
+      }),
+    })
+      .then(res => res.json())
+      .catch(err => {
+        console.error("Location upload failed", err);
+      });
+  }, [location, myName]);
 
   if (loading) {
     return (
@@ -151,7 +170,7 @@ export default function OSMMapWebView() {
 
             L.marker([u.lat, u.lng])
               .addTo(map)
-              .bindPopup(u.name + "<br/>Last seen: " + minutesAgo + "minutes ago");
+              .bindPopup(u.name + "<br/>Last seen: " + minutesAgo + " minutes ago");
           });
         }
       </script>

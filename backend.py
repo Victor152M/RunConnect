@@ -42,7 +42,7 @@ def locations():
 @app.route("/upload_location", methods=["POST"])
 @require_api_key
 def upload_location():
-    data = request.jsonify
+    data = request.json
 
     name = data.get("name")
     lat = data.get("lat")
