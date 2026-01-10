@@ -151,7 +151,7 @@ export default function OSMMapWebView() {
 
             L.marker([u.lat, u.lng])
               .addTo(map)
-              .bindPopup(u.name + "<br/>Last seen: " + minutesAgo + minutes ago);
+              .bindPopup(u.name + "<br/>Last seen: " + minutesAgo + "minutes ago");
           });
         }
       </script>
