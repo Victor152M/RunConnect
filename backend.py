@@ -36,6 +36,8 @@ def require_api_key(func):
 @app.route("/locations", methods=["GET"])
 @require_api_key
 def locations():
+    for user in users:
+        user["last_seen_seconds"]: now - user["timestamp"]
     return jsonify(users)
 
 
