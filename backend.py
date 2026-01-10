@@ -37,7 +37,7 @@ def require_api_key(func):
 @require_api_key
 def locations():
     for user in users:
-        user["last_seen_seconds"]: now - user["timestamp"]
+        user["last_seen_seconds"] = now - user["timestamp"]
     return jsonify(users)
 
 
