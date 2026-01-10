@@ -33,16 +33,16 @@ export default function OSMMapWebView() {
     );
   }
 
+
+  const filteredUsers = data?.filter(u =>
+      friends.includes(u.name)
+  );
+
+  const usersJS = `const users = ${JSON.stringify(filteredUsers || [])};`;
+
   if (error || !location) {
     const latitude = 44.4268;
     const longitude = 26.1025;
-
-    const filteredUsers = data?.filter(u =>
-        friends.includes(u.name)
-    );
-
-    const usersJS = `const users = ${JSON.stringify(filteredUsers || [])};`;
-
     
     const html = `
       <!DOCTYPE html>
@@ -106,8 +106,6 @@ export default function OSMMapWebView() {
 
   const latitude = location.latitude;
   const longitude = location.longitude;
-
-  const usersJS = `const users = ${JSON.stringify(data)};`;
 
   const html = `
     <!DOCTYPE html>
