@@ -36,6 +36,7 @@ def require_api_key(func):
 @app.route("/locations", methods=["GET"])
 @require_api_key
 def locations():
+    now = int(time.time())
     for user in users:
         user["last_seen_seconds"] = now - user["timestamp"]
     return jsonify(users)
@@ -60,7 +61,7 @@ def upload_location():
             user["lat"] = lat
             user["lng"] = lng
             user["timestamp"] = now
-            user["last_seen_seconds"]: now - user["timestamp"]
+            user["last_seen_seconds"] = now - user["timestamp"]
             return jsonify({"status": "updated"})
 
     users.append({
