@@ -34,6 +34,7 @@ export default function OSMMapWebView() {
     fetch(backend + "/upload_location", {
       method: "POST",
       headers:{
+        "Content-type": "application/json",
         "api-key": API_KEY,
       },
       body: JSON.stringify({
