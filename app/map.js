@@ -147,9 +147,11 @@ export default function OSMMapWebView() {
           ${usersJS}
 
           users.forEach(u => {
+            const minutesAgo = Math.floor(u.last_seen_seconds / 60);
+
             L.marker([u.lat, u.lng])
               .addTo(map)
-              .bindPopup(u.name)<br/>Last seen: u.timestamp min ago);
+              .bindPopup(u.name + "<br/>Last seen: " + minutesAgo + minutes ago);
           });
         }
       </script>

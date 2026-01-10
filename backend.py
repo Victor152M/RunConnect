@@ -16,10 +16,10 @@ CORS(app)
 now = int(time.time())
 
 users = [
-    {"lat": 44.428, "lng": 26.105, "name": "Alex", "timestamp": now},
-    {"lat": 44.421, "lng": 26.099, "name": "Maria", "timestamp": now},
-    {"lat": 48.206, "lng": 16.375, "name": "Lukas", "timestamp": now},
-    {"lat": 48.212, "lng": 16.368, "name": "Sophie", "timestamp": now }
+    {"lat": 44.428, "lng": 26.105, "name": "Alex", "timestamp": now, "last_seen_seconds": 2758},
+    {"lat": 44.421, "lng": 26.099, "name": "Maria", "timestamp": now, "last_seen_seconds": 75},
+    {"lat": 48.206, "lng": 16.375, "name": "Lukas", "timestamp": now, "last_seen_seconds": 583},
+    {"lat": 48.212, "lng": 16.368, "name": "Sophie", "timestamp": now, "last_seen_seconds": 1053}
 ]
 
 
@@ -58,13 +58,15 @@ def upload_location():
             user["lat"] = lat
             user["lng"] = lng
             user["timestamp"] = now
+            user["last_seen_seconds"]: now - user["timestamp"]
             return jsonify({"status": "updated"})
 
     users.append({
         "name": name,
         "lat": lat,
         "lng": lng,
-        "timestamp": now
+        "timestamp": now,
+        "last_seen_seconds": 0
     })
 
     return jsonify({"status": "created"}), 201
