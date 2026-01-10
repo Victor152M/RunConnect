@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
+import { API_KEY } from "../config";
 import { useFriends } from "../context/FriendsContext";
 import useLocation from '../hooks/useLocation';
 
@@ -14,7 +15,11 @@ export default function OSMMapWebView() {
   const backend = "https://runconnect-bddk.onrender.com/locations"
 
   useEffect(() => {
-    fetch(backend)
+    fetch(backend, {
+        headers: {
+        "api-key": API_KEY,
+        },
+      })
       .then((resp) => resp.json())
       .then((data) => {
         setData(data);
