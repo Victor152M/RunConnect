@@ -61,6 +61,7 @@ def upload_location():
             user["lat"] = lat
             user["lng"] = lng
             user["timestamp"] = now
+            user["last_seen_seconds"] = now - user["timestamp"]
             return jsonify({"status": "updated"})
 
     users.append({
