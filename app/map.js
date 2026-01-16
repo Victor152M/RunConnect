@@ -1,17 +1,16 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { API_KEY } from "../config";
 import { useFriends } from "../context/FriendsContext";
-import { useSteps } from "../context/StepsContext";
 import useLocation from '../hooks/useLocation';
 
 export default function OSMMapWebView() {
   const { location, loading, error } = useLocation();
   const [data, setData] = useState(null);
   const { friends, myName } = useFriends();
-  const { todaySteps } = useSteps();
 
   const backend = "https://runconnect-bddk.onrender.com"
   
@@ -33,24 +32,33 @@ export default function OSMMapWebView() {
   useEffect(() => {
     if (!location || !myName) return;
     if (!myName.trim()) return;
-    
-    fetch(backend + "/upload_location", {
-      method: "POST",
-      headers:{
-        "Content-type": "application/json",
-        "api-key": API_KEY,
-      },
-      body: JSON.stringify({
-        name: myName,
-        lat: location.latitude,
-        lng: location.longitude,
-        steps: todaySteps,
-      }),
-    })
-      .then(res => res.json())
-      .catch(err => {
+
+    const uploadLocation = async () => {
+      try {
+        const stored = await AsyncStorage.getItem("STEPS_DATA");
+        const storedSteps = stored ? JSON.parse(stored) : 0;
+
+        const res = await fetch(backend + "/upload_location", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "api-key": API_KEY,
+          },
+          body: JSON.stringify({
+            name: myName,
+            lat: location.latitude,
+            lng: location.longitude,
+            steps: storedSteps,
+          }),
+        });
+
+        await res.json();
+      } catch (err) {
         console.error("Location upload failed", err);
-      });
+      }
+    };
+
+    uploadLocation();
   }, [location, myName]);
 
   if (loading) {
