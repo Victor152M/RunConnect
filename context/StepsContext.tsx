@@ -46,6 +46,8 @@ export function StepsProvider({ children }: Props) {
   useEffect(() => {
     if (Platform.OS !== "android") return;
 
+    let subscription: Pedometer.Subscription | null = null;
+
     (async () => {
       try {
         const { status } = await Pedometer.requestPermissionsAsync();
@@ -54,10 +56,9 @@ export function StepsProvider({ children }: Props) {
         const available = await Pedometer.isAvailableAsync();
         if (!available) return;
 
-        const subscription = Pedometer.watchStepCount(result => {
+        subscription = Pedometer.watchStepCount(result => {
           const sensorSteps = typeof result.steps === "number" ? result.steps : 0;
 
-          // First event: just set lastSensorCountRef
           if (lastSensorCountRef.current === null) {
             lastSensorCountRef.current = sensorSteps;
             return;
@@ -68,33 +69,35 @@ export function StepsProvider({ children }: Props) {
 
           lastSensorCountRef.current = sensorSteps;
 
-          // Add delta to totals
           setTodaySteps(prev => {
             const newTotal = prev + delta;
+
+            setWeekSteps(prevWeek => {
+              const dayIndex = new Date().getDay();
+              const updatedWeek = [...prevWeek];
+              updatedWeek[dayIndex] = (prevWeek[dayIndex] || 0) + delta;
+
+              AsyncStorage.setItem("STEPS_DATA", JSON.stringify({
+                today: newTotal,
+                week: updatedWeek
+              }));
+
+              return updatedWeek;
+            });
+
             return newTotal;
-          });
-
-          setWeekSteps(prev => {
-            const dayIndex = new Date().getDay();
-            const updated = [...prev];
-            updated[dayIndex] = (prev[dayIndex] || 0) + delta;
-
-            // Save everything
-            AsyncStorage.setItem("STEPS_DATA", JSON.stringify({
-              today: todaySteps + delta,
-              week: updated
-            }));
-
-            return updated;
           });
         });
 
-        return () => subscription.remove();
       } catch (err) {
         console.error(err);
       }
     })();
-  }, [todaySteps]);
+
+    return () => {
+      if (subscription) subscription.remove();
+    };
+  }, []);
 
   return (
     <StepsContext.Provider value={{ todaySteps, weekSteps }}>
