@@ -51,8 +51,6 @@ def upload_location():
     lat = data.get("lat")
     lng = data.get("lng")
     steps = data.get("steps")
-    if steps is not None:
-        user["steps"] = steps
 
     if not name or lat is None or lng is None:
         return jsonify({"error": "Invalid data"}), 400
@@ -65,6 +63,7 @@ def upload_location():
             user["lng"] = lng
             user["timestamp"] = now
             user["last_seen_seconds"] = now - user["timestamp"]
+            user["steps"] = steps
             return jsonify({"status": "updated"})
 
     users.append({
