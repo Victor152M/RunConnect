@@ -7,7 +7,7 @@ export default function Friends() {
   const [friendName, setFriendName] = useState("");
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <View style={{ flex: 1, padding: 36 }}>
       <Text style={{ fontSize: 18, marginBottom: 5 }}>Your name</Text>
       <TextInput
         value={myName}
@@ -34,7 +34,7 @@ export default function Friends() {
         }}
       />
 
-      <Text style={{ marginTop: 20, fontWeight: "bold" }}>Friends:</Text>
+      <Text style={{ marginTop: 24, fontWeight: "bold", fontSize: 18 }}>Friends:</Text>
       {friends.map((f, i) => (
         <Text key={i}>• {f}</Text>
       ))}
