@@ -16,10 +16,10 @@ CORS(app)
 now = int(time.time())
 
 users = [
-    {"lat": 44.428, "lng": 26.105, "name": "Alex", "timestamp": now - 2758, "last_seen_seconds": 2758},
-    {"lat": 44.421, "lng": 26.099, "name": "Maria", "timestamp": now - 75, "last_seen_seconds": 75},
-    {"lat": 48.206, "lng": 16.375, "name": "Lukas", "timestamp": now - 583, "last_seen_seconds": 583},
-    {"lat": 48.212, "lng": 16.368, "name": "Sophie", "timestamp": now - 1053, "last_seen_seconds": 1053}
+    {"lat": 44.428, "lng": 26.105, "name": "Alex", "timestamp": now - 2758, "last_seen_seconds": 2758, "steps": 342},
+    {"lat": 44.421, "lng": 26.099, "name": "Maria", "timestamp": now - 75, "last_seen_seconds": 75, "steps": 4705},
+    {"lat": 48.206, "lng": 16.375, "name": "Lukas", "timestamp": now - 583, "last_seen_seconds": 583, "steps": 730},
+    {"lat": 48.212, "lng": 16.368, "name": "Sophie", "timestamp": now - 1053, "last_seen_seconds": 1053, "steps": 2198}
 ]
 
 
@@ -50,6 +50,9 @@ def upload_location():
     name = data.get("name")
     lat = data.get("lat")
     lng = data.get("lng")
+    steps = data.get("steps")
+    if steps is not None:
+        user["steps"] = steps
 
     if not name or lat is None or lng is None:
         return jsonify({"error": "Invalid data"}), 400

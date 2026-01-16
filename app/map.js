@@ -4,14 +4,17 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { API_KEY } from "../config";
 import { useFriends } from "../context/FriendsContext";
+import { useSteps } from "../context/StepsContext";
 import useLocation from '../hooks/useLocation';
 
 export default function OSMMapWebView() {
   const { location, loading, error } = useLocation();
   const [data, setData] = useState(null);
   const { friends, myName } = useFriends();
+  const { todaySteps } = useSteps();
 
   const backend = "https://runconnect-bddk.onrender.com"
+  
   useEffect(() => {
     fetch(backend + "/locations", {
         headers: {
@@ -41,6 +44,7 @@ export default function OSMMapWebView() {
         name: myName,
         lat: location.latitude,
         lng: location.longitude,
+        steps: todaySteps,
       }),
     })
       .then(res => res.json())
@@ -173,7 +177,7 @@ export default function OSMMapWebView() {
 
             L.marker([u.lat, u.lng])
               .addTo(map)
-              .bindPopup(u.name + "<br/>Last seen: " + minutesAgo + " minutes ago");
+              .bindPopup(u.name + "<br/>Last seen: " + minutesAgo + " minutes ago" + "<br/>Step count: " + u.steps);
           });
         }
       </script>
