@@ -36,7 +36,8 @@ export default function OSMMapWebView() {
     const uploadLocation = async () => {
       try {
         const stored = await AsyncStorage.getItem("STEPS_DATA");
-        const storedSteps = stored ? JSON.parse(stored) : 0;
+        const parsed = stored ? JSON.parse(stored) : null;
+        const storedSteps = parsed && typeof parsed.today === "number" ? parsed.today : 0;
 
         const res = await fetch(backend + "/upload_location", {
           method: "POST",
