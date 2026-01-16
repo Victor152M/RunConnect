@@ -24,8 +24,9 @@ export default function Friends() {
         style={{ borderWidth: 1, padding: 8, marginBottom: 10 }}
       />
 
-      <Button
+      <Button 
         title="Add friend"
+        color="#991F26"
         onPress={() => {
           if (friendName.trim()) {
             addFriend(friendName.trim());

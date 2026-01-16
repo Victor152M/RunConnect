@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { API_KEY } from "../config";
@@ -113,10 +113,12 @@ export default function OSMMapWebView() {
 
     return (
       <SafeAreaProvider>
+        {/*
         <ScrollView style={{ padding: 20 }}>
           <Text>{data ? JSON.stringify(data, null, 2) : "Loading..."}</Text>
         </ScrollView>
-        <StatusBar barStyle="dark-content" translucent={false} />
+        */}
+        <StatusBar barStyle="white-content" translucent={false} />
         <View style={styles.container}>
           <WebView
             originWhitelist={['*']}
@@ -186,7 +188,7 @@ export default function OSMMapWebView() {
         <Text>{data ? JSON.stringify(data, null, 2) : "Loading..."}</Text>
       </ScrollView>
       */}
-      <StatusBar barStyle="dark-content" translucent={false} />
+      <StatusBar barStyle="white-content" translucent={false} />
       <View style={styles.container}>
         <WebView
           originWhitelist={['*']}

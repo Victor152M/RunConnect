@@ -55,6 +55,7 @@ export default function StepTrackerUI({ weeklySteps }) {
           />
           <Button
             title="Set Goal"
+            color="#991F26"
             onPress={() => {
               const n = parseInt(goalInput);
               if (!isNaN(n) && n > 0) setGoal(n);
@@ -120,11 +121,13 @@ const styles = StyleSheet.create({
 
   input: {
     width: "100%",
+    fontSize: 16,
+    fontWeight: "bold",
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 10,
-    borderRadius: 8,
-    marginBottom: 10,
+    borderRadius: 12,
+    marginBottom: 28,
   },
 
   weeklyTitle: {
