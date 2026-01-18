@@ -9,22 +9,31 @@ import {
 import { useFriends } from "../context/FriendsContext";
 
 export default function Friends() {
-  const { myName, friends, addFriend } = useFriends();
+  const { myName, setMyName, friends, addFriend } = useFriends();
+
+  const [tempName, setTempName] = useState(myName);
   const [friendName, setFriendName] = useState("");
+
+  const onSetName = () => {
+    if (!tempName.trim()) return;
+    setMyName(tempName.trim());
+  };
 
   return (
     <View style={styles.container}>
-      {/* Your name (read-only) */}
+      {/* Set name */}
       <View style={styles.card}>
         <Text style={styles.label}>Your name</Text>
-        <View style={styles.readOnlyInput}>
-          <Text style={styles.readOnlyText}>
-            {myName || "Not set"}
-          </Text>
-        </View>
-        <Text style={styles.hint}>
-          You can change your name on the Home screen
-        </Text>
+        <TextInput
+          value={tempName}
+          onChangeText={setTempName}
+          placeholder="Enter your name"
+          placeholderTextColor="#777"
+          style={styles.input}
+        />
+        <TouchableOpacity style={styles.button} onPress={onSetName}>
+          <Text style={styles.buttonText}>Set name</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Add friend */}
@@ -37,7 +46,6 @@ export default function Friends() {
           placeholderTextColor="#777"
           style={styles.input}
         />
-
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
@@ -81,13 +89,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: "#aaa",
-    fontSize: 14,
     marginBottom: 8,
-  },
-  hint: {
-    color: "#666",
-    fontSize: 12,
-    marginTop: 6,
   },
   input: {
     backgroundColor: "#111",
@@ -95,14 +97,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
-  },
-  readOnlyInput: {
-    backgroundColor: "#111",
-    borderRadius: 8,
-    padding: 12,
-  },
-  readOnlyText: {
-    color: "#fff",
   },
   button: {
     backgroundColor: "#991F26",

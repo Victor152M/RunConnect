@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   stepsText: {
     fontSize: 42,
     fontWeight: "bold",
-    color: "#000",
+    color: "#fff",
   },
 
   goalText: {
