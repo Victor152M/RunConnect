@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   barValue: {
     fontSize: 12,
     marginBottom: 4,
-    color: "#000",
+    color: "#fff",
   },
 
   bar: {
