@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import StepTrackerUI from "../components/StepTrackerUI";
 import { useSteps } from "../context/StepsContext";
 
@@ -9,7 +9,6 @@ export default function Home() {
   return (
     <View style={styles.container}>
       {/* Logo */}
-      <Text style={styles.logo}>RunConnect</Text>
 
       {/* Centered steps */}
       <View style={styles.center}>
@@ -22,14 +21,17 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0f0f0f",
-    paddingTop: 32,
+    backgroundColor: "#fffaee",
+    paddingTop: 64,
   },
   logo: {
     textAlign: "center",
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#991F26",
+    fontSize: 32,
+    fontWeight: "700",
+    color: "#FF6B6B", // brand-accent color
+    textShadowColor: "rgba(0,0,0,0.1)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
     marginBottom: 16,
   },
   center: {

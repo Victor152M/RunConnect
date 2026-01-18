@@ -48,15 +48,15 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: '#fff',
     borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    borderTopColor: '#fffaee',
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     shadowRadius: 3,
   },
   safeArea: {
-    backgroundColor: '#fff',
+    backgroundColor: '#fffaee',
   },
   navbar: {
     flexDirection: 'row',

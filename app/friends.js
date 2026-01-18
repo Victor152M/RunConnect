@@ -78,25 +78,30 @@ export default function Friends() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0f0f0f",
+    backgroundColor: "#fffaee",
     padding: 16,
+    paddingTop: 36,
   },
   card: {
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "##fffaee",
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
   },
   label: {
-    color: "#aaa",
+    color: "#000000",
     marginBottom: 8,
+    fontSize: 18,
+    fontWeight: "bold",
   },
   input: {
-    backgroundColor: "#111",
-    color: "#fff",
+    backgroundColor: "#fffaee",
+    color: "#000000",
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#000000",
   },
   button: {
     backgroundColor: "#991F26",
@@ -113,7 +118,8 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
   friendItem: {
-    color: "#fff",
+    color: "#000000",
     marginTop: 6,
+    fontSize: 20,
   },
 });

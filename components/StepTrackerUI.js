@@ -25,7 +25,7 @@ export default function StepTrackerUI({ weeklySteps }) {
   const percent = goal > 0 ? todaySteps / goal : 0;
 
   const getColor = () => {
-    if (percent < 0.3) return "#d62828";
+    if (percent < 0.3) return "#991F26";
     if (percent < 0.6) return "#b58900";
     if (percent < 0.9) return "#a3ff00";
     return "#007f33";
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   stepsText: {
     fontSize: 42,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#000000",
   },
 
   goalText: {
