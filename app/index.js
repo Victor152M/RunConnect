@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     backgroundColor: "#991F26",
     paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     borderRadius: 20,
     alignSelf: "center",
     marginBottom: 0,
